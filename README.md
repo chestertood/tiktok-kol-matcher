@@ -18,7 +18,7 @@ Facebook page URL (+ optional website)
 app.py               Streamlit UI
 main.py              CLI entry point
 backend/             pipeline: facebook_client, brand, tiktok, rank, report, pipeline, common
-docs/                assessment brief, Loom script, notes
+docs/                assessment brief, notes
 examples/            sample_report.md, sample_results.csv, sample_results.json (output of a real run)
 requirements.txt     dependencies
 .env.example         copy to .env and fill in keys
