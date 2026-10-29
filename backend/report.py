@@ -72,8 +72,8 @@ if __name__ == "__main__":  # offline preview with fake data, no API credits
     assert out_name({"brand": "iHAVECPU (บริษัท ไอ แฮฟ ซีพียู จำกัด)"}, "csv") == "iHAVECPU_results.csv"
     assert out_name({"brand": "Dr. Pong's Shop"}, "md") == "Dr_Pong_s_Shop_results.md"
     text = render(brand, {"micro": [kol]})
-    assert "@demo.kol" in text and "DM @demo.kol" in text and "Micro 10K-200K" in text
+    assert "@demo.kol" in text and "DM @demo.kol" in text and "Micro 201K-600K" in text
     write_csv({"micro": [kol]}, "sample.csv")
     rows = list(csv.DictReader(open("sample.csv", encoding="utf-8-sig", newline="")))
-    assert rows[0]["handle"] == "demo.kol" and rows[0]["tier"] == "Micro 10K-200K" and rows[0]["pitch"] == "สวัสดีค่ะ ..."
+    assert rows[0]["handle"] == "demo.kol" and rows[0]["tier"] == "Micro 201K-600K" and rows[0]["pitch"] == "สวัสดีค่ะ ..."
     print(text)

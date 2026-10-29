@@ -74,7 +74,7 @@ Note: use `streamlit run app.py`, not `python app.py`.
 
 ## How ranking works
 
-- **Tiers:** Nano 1K-10K, Micro 10K-200K, Mid 200K-600K, Mega 600K+. The 200K/600K boundaries follow Convert Cake's own KOL tiers; the gap on their site (10K-200K) is filled by micro.
+- **Tiers:** Nano 1K-10K, Micro 201K-600K, Mega 601K+ — exactly Convert Cake's [KOL tiers](https://convertcake.com/service/kol-inflencer-marketing/). Their page defines nothing for 10K-200K, so creators in that range are skipped.
 - **Thai filter:** a creator counts as Thai when most of their captions contain Thai script.
 - **Claude** sees the brand profile and each candidate's bio + captions, and returns `relevance` (0-10), `kind` (`creator` or `brand_channel`) and a one-line Thai reason. Brand/media channels (including the client's own) and relevance < 5 are dropped.
 - **Score** = 0.5 x relevance/10 + 0.3 x min(ER / 10%, 1) + 0.2 x min(avg views / followers, 1).

@@ -4,20 +4,17 @@ from statistics import mean
 
 from backend.common import run_actor
 
-# (name, min followers). Boundaries at 200K/600K follow Convert Cake's own KOL tiers;
-# the 10K-200K gap on their site is filled by micro, 1K-10K is nano.
-TIERS = (("nano", 1_000), ("micro", 10_000), ("mid", 200_000), ("mega", 600_000))
-TIER_LABEL = {"nano": "Nano 1K-10K", "micro": "Micro 10K-200K", "mid": "Mid 200K-600K", "mega": "Mega 600K+"}
+# (name, min followers, max followers). Exactly Convert Cake's KOL tiers
+# (convertcake.com/service/kol-inflencer-marketing): Nano 1K-10K, Micro 201K-600K, Mega 601K+.
+# Their page defines nothing for 10K-200K, so creators in that gap are skipped.
+TIERS = (("nano", 1_000, 10_000), ("micro", 201_000, 600_999), ("mega", 601_000, float("inf")))
+TIER_LABEL = {"nano": "Nano 1K-10K", "micro": "Micro 201K-600K", "mega": "Mega 601K+"}
 EMAIL = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+")
 THAI = re.compile(r"[฀-๿]")
 
 
 def tier_of(followers):
-    tier = None
-    for name, low in TIERS:
-        if followers >= low:
-            tier = name
-    return tier
+    return next((name for name, low, high in TIERS if low <= followers <= high), None)
 
 
 def is_thai(captions):
@@ -71,8 +68,9 @@ def find_creators(queries, videos_per_query=40):
 
 
 if __name__ == "__main__":
-    assert tier_of(500) is None and tier_of(5_000) == "nano" and tier_of(10_000) == "micro"
-    assert tier_of(200_000) == "mid" and tier_of(2_000_000) == "mega"
+    assert tier_of(500) is None and tier_of(5_000) == "nano" and tier_of(10_000) == "nano"
+    assert tier_of(50_000) is None and tier_of(201_000) == "micro" and tier_of(600_999) == "micro"
+    assert tier_of(601_000) == "mega" and tier_of(2_000_000) == "mega"
     assert is_thai(["รีวิวกันแดด", "hello", "ผิวแพ้ง่าย"]) and not is_thai(["hello", "world"])
     assert EMAIL.search("งานโฆษณา ติดต่อ a.b@mail.co.th 🙏").group() == "a.b@mail.co.th"
     print("ok")
